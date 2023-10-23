@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+{{ c.c_name }}
+{% endblock %}
+
+{% block content %}
+<div class="hero inner-page background-hero" >
+        
+  <div class="container">
+    <div class="row align-items-end ">
+      <div class="col-lg-5">
+
+        <div class="intro">
+          <h1><strong>Car</strong></h1>
+          <div class="custom-breadcrumbs"><a href="{% url 'index' %}">Home</a> <span class="mx-2">/</span> <a href="{% url 'cars' %}">Listings</a>
+            <span class="mx-2">/</span> <strong>Car</strong>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>    
+<div class="my-form container p-5 my-5 rounded border border-primary">
+    <form id="frmrentcart" action="{% url 'rentcar'%}">
+        <h2 class="text-center">Cars Details</h2>
+        <hr>
+        <br>
+        <section>
+            
+        <div class="row">
+          <div class="row-md-6 row-lg-4 mb-4">
+
+            <div class="listing d-block  align-items-stretch">
+              <div class="row">
+                <div class="col listing-img h-100 ">
+                  <img src="{{ c.c_photo.url }}" alt="Image" class="img-fluid">
+                </div>
+                <div class="col ">
+                  <div class="listing-contents h-100">
+                    <h2>{{ c.c_type }}</h2>
+                    <h3 >{{ c.c_name }}</h3>
+                    <h3 class="text-warning">{{ c.c_model }}</h3>
+                    <div class="rent-price">
+                      <strong>{{ c.c_price }}$</strong><span class="mx-1">/</span>day
+                    </div>
+                                   
+                    <p>{{ c.c_details }}<p>
+                      {% if request.user.is_authenticated %}
+                      <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#staticBackdrop">Rent Now</button>
+                      {% else %}
+                      <a href="{% url 'login' %}" class="btn btn-primary btn-sm" >Log in</a>
+                      {% endif %}
+                    </p>
+                    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Enter your informations</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <label class="font-weight-bold">Phone number</label>
+                            <input type="number" name="phone" id="inputPhone"  class="form-control" required>
+                            <label class="font-weight-bold">Expire date</label>
+                            <input type="date" class="form-control" name="exdate" id="inputExdate" required >
+                            <input type="hidden" value="{{ c.id }}" name="c_id">
+                            <input type="hidden" name="price" value="{{ c.c_price }}">
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnclose">Close</button>
+                            <button class="btn btn-warning" onclick="rentcar()">Confirm</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <p>
+                      <a href="{% url 'car_share' c.id %}" class="btn btn-success">
+                      Share this Car
+                      </a>
+                      </p>
+                  </div>
+                  
+                </div>
+              </div>           
+              
+
+            </div>
+          </div>
+
+          
+
+        </div>
+            
+        </section>
+    
+
+    </form>
+
+    <script>
+      function rentcar(){
+        document.getElementById('btnclose').click();
+        document.getElementById('frmrentcar').submit();
+      }
+    </script>
+
+    
+</div>
+{% endblock %}

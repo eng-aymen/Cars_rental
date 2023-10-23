@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Create an account{% endblock %}
+{% block content %}
+
+<div class="bg-primary" style="height: 100px;"></div>
+<center>
+    <h1>Create an account</h1>
+    <p><b>Please, sign up using the following form:</b></p>
+</center>
+<div class="container w-50 font-weight-bolder text-black border border-primary rounded pt-3">
+    {% if request.user.is_authenticated %}
+    <div class="alert alert-info  text-center"><b>You have to <a href="{% url 'logout' %}">Log out</a> first then sign up</b></div>
+    {% else %}
+    <form method="post">
+        {% include 'partials/_alerts.html' %}
+        {{ user_form.as_p }}
+        {% csrf_token %}
+        <center><p><input type="submit" class="btn btn-primary" value="Create my account"></p>
+        <p>If you have already an account <a href="{% url 'login' %}">login</a>.
+            </p></center>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

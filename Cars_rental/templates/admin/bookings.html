@@ -1,0 +1,95 @@
+{% extends 'admin/base.html' %}
+
+{% load static %}
+{% block branding %}
+<div class="row">
+    <div class="col">
+        <img src="{% static 'images/icon_car.png' %}" width="80px" height="60px">
+    </div>
+    <div class="col" style="margin: 11px;">
+        <h1 id="head">
+            CarRental
+        </h1>
+    </div>
+    
+    
+</div>
+
+{% endblock %}
+
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+{% block content %}
+<div class="site-section bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7">
+        <h2 class="section-heading"><strong>Cars rented</strong></h2>
+        <hr>
+        <h3>Date of today: {{d}}</h3>
+        <br><br><br>
+      </div>
+    </div>
+    
+    
+    
+      <div class="row">
+        {% for b in bookings %}
+        <div class="col-md-6 col-lg-4 mb-4">
+          {% if b.b_exdate == d %}
+          <div class="listing d-block bg-warning align-items-stretch">
+            {% elif b.b_exdate < d %}
+          <div class="listing d-block bg-danger align-items-stretch">
+            {% else %}
+            <div class="listing d-block  align-items-stretch">
+          {% endif %}
+            <div class="listing-img h-100 mr-4">
+              <img src="{{ b.b_car.c_photo.url }}" alt="Image" class="img-fluid">
+            </div>
+            <div class="listing-contents h-100">
+                    <h2>{{ b.b_car.c_type }}</h2> 
+                    <h3>{{ b.b_car.c_model }}</h3> 
+                    <h3>{{ b.b_car.c_name }}</h3>
+                    <div class="rent-price">
+                      <strong>{{ b.b_car.c_price }}$</strong><span class="mx-1">/</span>day
+                    </div>
+                    <div class="d-block d-md-flex mb-3 border-bottom pb-3"></div>
+                    <h3>Name: {{ b }}</h3> 
+                    <h3>Phone number: {{ b.b_phone }}</h3> 
+                    <h6>Rent date: {{ b.b_date }}</h6>
+                    <h3>Expire date: {{ b.b_exdate }}</h3>
+                    <form method="get" action="{% url 'expire' %}">
+                      <input type="hidden" value="{{ b.id }}" name="b_id">
+                      </div>
+                      <div class="text-center">
+                        <button type="submit" class="text-white btn btn-primary w-50">Expire</button>
+                      </div>
+                    </form>
+                  
+                </div>
+              </div>
+
+
+            {% empty %}
+            <div class="alert alert-info text-center">No reserves here yet</div>
+        {% endfor %}
+
+        </div>
+      </div>
+    </div>
+
+
+    
+
+    <div class="site-section bg-primary py-5">
+      <div class="container">
+         <h2 class="mb-0 text-white text-center">Aymen Alsuhaiqi</h2>
+      </div>
+    </div>
+
+      
+    </div>
+    {% endblock %}

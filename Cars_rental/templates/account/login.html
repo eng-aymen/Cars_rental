@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Log-in{% endblock %}
+{% block content %}
+<div class="bg-primary" style="height: 100px;"></div>
+<center>
+    <h1>Log-in</h1>
+    <p><b>Please, use the following form to log-in:
+        If you don't have an account <a href="{% url 'register' %}">register here</a>.
+    </b></p>
+</center>
+<div class="container w-50 font-weight-bolder text-black border border-primary rounded pt-3">
+    {% if request.user.is_authenticated %}
+    <div class="alert alert-info  text-center"><b>Welcome Mr.{{request.user|upper}}</b></div>
+    {% else %}
+    <form method="post">
+        {% include 'partials/_alerts.html' %}
+        {{ form.as_p }}
+        {% csrf_token %}
+        <center><p><input type="submit" class="btn btn-primary" value="Log in"></p></center>
+    </form>
+    {% endif %}
+</div>
+
+{% endblock %}
